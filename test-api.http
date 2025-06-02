@@ -1,0 +1,22 @@
+### logearse
+
+POST http://localhost:8000/api/auth/login
+Accept: application/json
+Content-Type: application/json
+
+{
+    "email": "mariane@xample.com",
+    "password": "12345678"
+}
+
+### registrarse
+
+POST http://localhost:8000/api/auth/register
+Accept: application/json
+Content-Type: application/json
+
+{
+    "name": "Marian",
+    "email": "mariane@xample.com",
+    "password": "12345678"
+}

@@ -1,0 +1,49 @@
+version: '3.8'
+services:
+    app:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        container_name: lara-auth-app
+        volumes:
+            -   .:/var/www
+
+        networks:
+            - application
+        depends_on:
+            -   database
+        env_file:
+            -   .env
+    nginx_app:
+        image: nginx:latest
+        container_name: app-nginx
+        ports:
+            -   8000:80
+        volumes:
+            - .:/var/www
+            - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+        depends_on:
+            -   app
+        networks:
+            - application
+
+    database:
+        image: mysql:8.0
+        container_name: mysql-app-laravel
+        restart: always
+        ports:
+            -   3309:3306
+        environment:
+            - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+            - MYSQL_DATABASE=${DB_DATABASE}
+            - MYSQL_USER=${DB_USERNAME}
+            - MYSQL_PASSWORD=${DB_PASSWORD}
+        volumes:
+            -   mysql_database:/var/lib/mysql
+        networks:
+            - application
+networks:
+    application:
+
+volumes:
+    mysql_database:
